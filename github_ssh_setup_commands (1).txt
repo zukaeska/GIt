@@ -1,0 +1,40 @@
+# === GENERATE SSH KEY (if you haven't already) ===
+ssh-keygen -t rsa -b 4096 -C "github-ზე მითითებული ელფოსტა"
+
+# === START SSH AGENT AND ADD KEY ===
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/testKey
+
+# === OPTIONAL: CREATE SSH CONFIG (edit if needed) ===
+notepad ~/.ssh/config
+
+# Add this block inside the config file:
+# -----------------------------------------
+# Host github.com
+#   HostName github.com
+#   User git
+#   IdentityFile ~/.ssh/testKey
+# -----------------------------------------
+
+# === TEST SSH CONNECTION TO GITHUB ===
+ssh -T git@github.com
+
+# === CHECK REMOTE (in your git repo directory) ===
+git remote -v
+
+# === SET REMOTE IF NOT ALREADY SET ===
+git remote set-url origin git@github.com:yourusername/yourrepo.git
+
+# === ADD REMOTE IF IT DOESN'T EXIST ===
+git remote add origin git@github.com:yourusername/yourrepo.git
+
+# === INITIALIZE GIT REPO (if needed) ===
+git init
+
+# === PULL AND SET TRACKING TO REMOTE ===
+git pull origin master --set-upstream
+
+# === PUSH LOCAL CHANGES TO GITHUB ===
+git add .
+git commit -m "your commit message"
+git push origin master
